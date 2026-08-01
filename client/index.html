@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moniteur de trafic réseau — Nexus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="matrix-canvas"></canvas>
+    <div class="app-shell">
+      <header>
+        <div>
+          <h1>Moniteur de trafic réseau</h1>
+          <span class="subtitle">Interface de contrôle C2 pour tests de résilience autorisés</span>
+        </div>
+        <div id="status-badge" class="status-pill">SYSTÈME EN LIGNE</div>
+      </header>
+
+      <div class="dashboard-grid">
+        <section class="panel">
+          <h2>Contrôle du test</h2>
+          <form id="control-form" class="control-form">
+            <div class="field">
+              <label for="target">Cible (IP ou domaine)</label>
+              <input id="target" name="target" type="text" value="192.168.1.10" required />
+            </div>
+            <div class="field">
+              <label>Profils d’attaque</label>
+              <div id="attack-profiles" class="attack-grid"></div>
+              <input id="vector" name="vector" type="hidden" value="HTTP GET/POST Flood" />
+            </div>
+            <div class="field">
+              <label for="target-port">Port cible</label>
+              <input id="target-port" name="target-port" type="number" min="1" max="65535" value="80" />
+            </div>
+            <div class="field">
+              <label for="threads">Connexions simultanées</label>
+              <input id="threads" name="threads" type="number" min="1" max="100" value="20" />
+            </div>
+            <div class="field">
+              <label for="duration">Durée du test (s)</label>
+              <input id="duration" name="duration" type="number" min="10" max="300" value="60" />
+            </div>
+            <div class="field">
+              <label>Résumé du profil</label>
+              <div id="attack-summary" class="attack-summary">Sélectionnez un profil pour voir son impact et ses réglages recommandés.</div>
+            </div>
+            <p class="field-hint">Vous pouvez cibler une adresse IPv4, une IPv6 ou un nom de domaine.</p>
+            <div class="actions">
+              <button class="primary" type="submit">Lancer le test</button>
+              <button id="abort-button" class="secondary" type="button">Arrêter l’opération</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel map-panel">
+          <h2>Localisation géographique</h2>
+          <div id="geo-map"></div>
+          <p id="geo-caption" class="map-caption">En attente des données de géolocalisation…</p>
+        </section>
+
+        <section class="panel">
+          <h2>État de la cible</h2>
+          <div id="target-state" class="target-state-list">En attente d’un ciblage…</div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>État des nœuds</h2>
+            <button id="select-all" class="secondary tiny" type="button">Tout sélectionner</button>
+          </div>
+          <div id="selected-count" class="selected-count">Nœuds sélectionnés : 0 / 0</div>
+          <div id="agents-list" class="agents-grid"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Métriques temps réel</h2>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="label">Connexions actives</span>
+              <span id="active-connections" class="value">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="label">Paquets envoyés</span>
+              <span id="packets-sent" class="value">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="label">Temps de réponse moyen (ms)</span>
+              <span id="response-time" class="value">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="label">Taux de réussite (%)</span>
+              <span id="success-rate" class="value">0</span>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="traffic-chart" width="600" height="220"></canvas>
+          </div>
+        </section>
+
+        <section class="panel log-panel-wide">
+          <h2>Journal d’activité</h2>
+          <div id="log-list" class="log-panel"></div>
+        </section>
+
+        <section class="panel log-panel-wide">
+          <h2>Historique des sessions</h2>
+          <div id="tests-list" class="tests-list"></div>
+        </section>
+      </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

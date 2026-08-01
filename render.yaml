@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: traffic-resilience-dashboard
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server/src/app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: API_TOKEN
+        value: nexus-demo-token
