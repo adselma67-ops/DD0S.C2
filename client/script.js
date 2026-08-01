@@ -1,10 +1,10 @@
-const DEFAULT_API_BASE = 'https://c2ddos.netlify.app/api';
+const DEFAULT_API_BASE = 'https://dd0s-c2.onrender.com/api';
 const API_BASE_URL = window.__API_BASE_URL__ || localStorage.getItem('nexus-api-base-url') || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:5000/api'
   : DEFAULT_API_BASE);
 const WS_BASE_URL = window.__WS_BASE_URL__ || localStorage.getItem('nexus-ws-base-url') || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'ws://localhost:5000/ws'
-  : `${API_BASE_URL.replace(/^http/, 'ws').replace(/^https/, 'wss').replace(/\/api$/, '')}/ws`);
+  : 'wss://dd0s-c2.onrender.com/ws');
 const API_TOKEN = localStorage.getItem('nexus-api-token') || 'nexus-demo-token';
 
 const statusBadge = document.getElementById('status-badge');
